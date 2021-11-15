@@ -14,7 +14,7 @@
                     <time class="tweet-author__add tweet__date"><?= date('d.m.y в H:i', strtotime($post['date'])) ?></time>
                   </h3>
 
-                  <?php if ( logged_in() && $post['user_id'] === $_SESSION['user']['id'] ) { ?>
+                  <?php if (logged_in() && $post['user_id'] === $_SESSION['user']['id']) { ?>
                     <a href="<?= get_url('includes/delete_post.php?id=' . $post['id']) ?>" class="tweet__delete-button chest-icon"></a>
                   <?php } ?>
 
@@ -32,8 +32,22 @@
               </div>
             </div>
             <footer>
-              <button class="tweet__like">53</button>
-              <!-- tweet__like_active -->
+
+              <?php
+              $likes_count = get_likes_count($post['id']);
+
+              if (logged_in()) {
+
+                if (is_post_liked($post['id'])) { ?>
+
+                  <a href="<?= get_url('includes/delete_like.php?id=' . $post['id']); ?>" class="tweet__like tweet__like_active"><?= $likes_count; ?></a>
+                <?php } else { ?>
+                  <a href="<?= get_url('includes/add_like.php?id=' . $post['id']); ?>" class="tweet__like"><?= $likes_count; ?></a>
+                <?php }
+              } else { ?>
+                <div class="tweet__like"><?= $likes_count; ?></div>
+              <?php } ?>
+
             </footer>
           </article>
         </li>
